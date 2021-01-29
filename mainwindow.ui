@@ -810,6 +810,9 @@
    <property name="text">
     <string>Open logger</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="clear_logger_button">
    <property name="text">

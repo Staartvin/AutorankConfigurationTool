@@ -62,11 +62,19 @@ class DataManager:
         # Clear the previous data
         self.loaded_paths.clear()
 
+        LogWindow.log_message("Loading new Paths.yml file.")
+
         with open(os.path.join(self.autorank_folder, "Paths.yml")) as paths_file:
             paths_data = yaml.load(paths_file, Loader=yaml.FullLoader)
 
             # Load paths and their data
             for path_name, path_data in paths_data.items():
                 loaded_path = data.path.Path.load_from_yaml(path_name, path_data)
+
+                LogWindow.log_message(f"Loaded path '{loaded_path.configuration_name}' with {len(loaded_path.prerequisites)} prerequisite(s), {len(loaded_path.requirements)} requirement(s) and {len(loaded_path.results)} result(s).")
+
+                self.loaded_paths.append(loaded_path)
+
+        LogWindow.log_message(f"Loaded {len(self.loaded_paths)} paths from Paths.yml file.")
 
 

@@ -70,7 +70,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.statusBar().showMessage("Opening logger window", 5000)
             self.log_window.show()
         else:
-            self.statusBar().showMessage("Showing logger window again", 5000)
+            # The window is already open, so just raise it to draw the attention to the user.
             self.log_window.raise_()
 
     def clear_logger_window(self):

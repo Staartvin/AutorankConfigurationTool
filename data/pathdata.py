@@ -1,3 +1,4 @@
+import re
 from typing import Dict, List, Optional
 
 from data.requirement import Requirement
@@ -16,8 +17,10 @@ class PathData:
         :return: an empty requirement instance (or None) if nothing was found.
         """
 
+        cleaned_identifier_name = re.sub(r'\d+', '', identifier_name).strip()
+
         # Do a lookup to see if we can find a requirement type for the given identifier
-        requirement_type: RequirementType = RequirementType.get_requirement_from_identifier(identifier_name)
+        requirement_type: RequirementType = RequirementType.get_requirement_from_identifier(cleaned_identifier_name)
 
         # If we found nothing, we stop
         if requirement_type is None:

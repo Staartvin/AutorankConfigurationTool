@@ -3,6 +3,7 @@ from typing import List, Optional, Dict
 import data.requirement
 import data.result
 import data.pathdata
+from data.logger.logwindow import LogWindow
 
 
 class Path:
@@ -39,14 +40,50 @@ class Path:
         """
         path = Path(name)
 
+        # Obtain prerequisites and requirements that are defined in the YAML dictionary
         defined_prerequisites: Dict = yaml_data.get("prerequisites", {})
+        defined_requirements: Dict = yaml_data.get("requirements", {})
 
+        # Load prerequisites
         for prerequisite_name, prerequisite_data in defined_prerequisites.items():
+            # Match prerequisite based on name
             prerequisite: data.requirement.Requirement = data.pathdata.PathData.create_empty_requirement(prerequisite_name)
 
+            # Check if prerequisite could be found
+            if prerequisite is None:
+                LogWindow.log_message(f"Could not identify prerequisite '{prerequisite_name}' of path '{name}'!")
+                continue
+
+            # If the data is not a dict, we force it to a string
+            if not isinstance(prerequisite_data, Dict):
+                prerequisite_data = str(prerequisite_data)
+
+            # Fill the prerequisite with data
             prerequisite.load_from_yaml(prerequisite_data)
 
+            # Add the prerequisite to the path.
             path.prerequisites.append(prerequisite)
+
+        # Load requirements
+        for requirement_name, requirement_data in defined_requirements.items():
+            # Match requirement based on name
+            requirement: data.requirement.Requirement = data.pathdata.PathData.create_empty_requirement(
+                requirement_name)
+
+            # Check if prerequisite could be found
+            if requirement is None:
+                LogWindow.log_message(f"Could not identify requirement '{requirement_name}' of path '{name}'!")
+                continue
+
+            # If the data is not a dict, we force it to a string
+            if not isinstance(requirement_data, Dict):
+                requirement_data = str(requirement_data)
+
+            # Fill the requirement with data
+            requirement.load_from_yaml(requirement_data)
+
+            # Add the requirement to the path.
+            path.requirements.append(requirement)
 
         return path
 

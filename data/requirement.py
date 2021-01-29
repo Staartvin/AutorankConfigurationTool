@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional, Dict
 
 import data.result
+from data.logger.logwindow import LogWindow
 
 
 class Requirement(ABC):
@@ -21,7 +22,12 @@ class Requirement(ABC):
         return ""
 
     def load_from_yaml(self, yaml_data: Dict):
-        self.value = yaml_data.get("value", None)
+        if isinstance(yaml_data, Dict):
+            self.value = yaml_data.get("value", None)
+        elif isinstance(yaml_data, str):
+            self.value = yaml_data
+        else:
+            LogWindow.log_message(f"Could not identify type of data passed to requirement '{self.type}': {yaml_data}")
 
 
 

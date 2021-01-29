@@ -4,6 +4,7 @@ from typing import List, Optional
 import yaml
 
 import data.path
+from data.logger.logwindow import LogWindow
 
 
 class DataManager:
@@ -23,7 +24,7 @@ class DataManager:
 
         self.autorank_folder = path
 
-        print(f"Set Autorank folder to {path}")
+        LogWindow.log_message(f"Set Autorank folder to {path}")
 
     def is_valid_autorank_folder(self, path: str) -> bool:
         """

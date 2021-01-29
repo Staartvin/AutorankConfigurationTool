@@ -4,7 +4,7 @@ import sys
 
 import data.datamanager.datamanager
 import data.pathdata
-from data.requirements.requirement_types import RequirementType
+import data.logger.logwindow
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -13,12 +13,23 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.data_manager = data.datamanager.datamanager.DataManager()
-
+        self.log_window = data.logger.logwindow.LogWindow()
+        data.logger.logwindow.LogWindow.instance = self.log_window
 
         # Load the UI Page
         uic.loadUi('mainwindow.ui', self)
 
+        self.setWindowTitle("Autorank Configuration Tool")
+
         self.load_autorank_folder.triggered.connect(self.click_load_autorank_folder)
+        self.open_logger_button.triggered.connect(self.open_logger_window)
+        self.clear_logger_button.triggered.connect(self.clear_logger_window)
+
+    def closeEvent(self, event) -> None:
+        # Close log window when main window closes
+        if self.log_window is not None:
+            self.log_window.close()
+        event.accept()
 
     def click_load_autorank_folder(self):
         # Open dialog to load Autorank folder
@@ -54,7 +65,16 @@ class MainWindow(QtWidgets.QMainWindow):
         # Show message in bar.
         self.statusBar().showMessage(f"Loaded Autorank folder '{self.data_manager.autorank_folder}'", 10 * 1000)
 
+    def open_logger_window(self):
+        if not self.log_window.isVisible():
+            self.statusBar().showMessage("Opening logger window", 5000)
+            self.log_window.show()
+        else:
+            self.statusBar().showMessage("Showing logger window again", 5000)
+            self.log_window.raise_()
 
+    def clear_logger_window(self):
+        self.log_window.clear_logger()
 
 
 def main():

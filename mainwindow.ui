@@ -745,8 +745,16 @@
     <addaction name="actionAutorank_settings"/>
     <addaction name="actionACT_settings"/>
    </widget>
+   <widget class="QMenu" name="menuLogger">
+    <property name="title">
+     <string>Logger</string>
+    </property>
+    <addaction name="open_logger_button"/>
+    <addaction name="clear_logger_button"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
+   <addaction name="menuLogger"/>
    <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -796,6 +804,16 @@
   <action name="actionACT_settings">
    <property name="text">
     <string>ACT settings</string>
+   </property>
+  </action>
+  <action name="open_logger_button">
+   <property name="text">
+    <string>Open logger</string>
+   </property>
+  </action>
+  <action name="clear_logger_button">
+   <property name="text">
+    <string>Clear logger</string>
    </property>
   </action>
  </widget>
